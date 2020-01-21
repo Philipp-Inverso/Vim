@@ -2,16 +2,18 @@ let g:python3_host_prog='C:\Users\pme\AppData\Local\Programs\Python\Python37-32\
 
 call plug#begin('~/AppData/Local/nvim/plugged')
 
+Plug 'altercation/vim-colors-solarized'
+Plug 'junegunn/fzf'
+Plug 'lervag/vimtex'
+Plug 'machakann/vim-sandwich'
+Plug 'majutsushi/tagbar' 
+Plug 'mkitt/tabline.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-scripts/argtextobj.vim'
 Plug 'Shougo/deoplete.nvim'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/syntastic'
-Plug 'machakann/vim-sandwich'
-Plug 'junegunn/fzf'
 Plug 'tpope/vim-fugitive'
-Plug 'lervag/vimtex'
-Plug 'vim-scripts/argtextobj.vim'
-Plug 'vim-airline/vim-airline'
-Plug 'altercation/vim-colors-solarized'
 
 call plug#end()
 
@@ -48,3 +50,5 @@ let g:syntastic_check_on_wq = 0
 
 " setup airline
 let g:airline#extensions#tabline#enabled = 1
+let g:airline_left_sep='>'
+let g:airline#extensions#syntastic#enabled=1
