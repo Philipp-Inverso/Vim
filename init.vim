@@ -6,7 +6,7 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'junegunn/fzf'
 Plug 'lervag/vimtex'
 Plug 'machakann/vim-sandwich'
-Plug 'majutsushi/tagbar' 
+Plug 'majutsushi/tagbar'
 Plug 'mkitt/tabline.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-scripts/argtextobj.vim'
@@ -50,5 +50,4 @@ let g:syntastic_check_on_wq = 0
 
 " setup airline
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_left_sep='>'
 let g:airline#extensions#syntastic#enabled=1
