@@ -2,6 +2,9 @@
 call plug#begin(stdpath('data') . '/plugged')
 
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'chrboesch/vim-tabline'
 
 call plug#end()
 
@@ -28,7 +31,7 @@ colorscheme desert
 set clipboard+=unnamed
 
 " reload vimrc on save
-autocmd! bufwritepost .vimrc source %
+autocmd! bufwritepost ~/AppData/Local/nvim/init.vim source %
 
 " Make it obvious where 80 characters is TODO better
 set textwidth=80
@@ -176,6 +179,20 @@ autocmd FileType python imap <buffer> <F9> <esc>:w<CR>:exec '!python' shellescap
 " #############
 " automatically open Preview when entering Markdown Buffer
 let g:mkdp_auto_start = 1
+
+" #############
+" Airline
+" #############
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_right_sep = ' '
+let g:airline_left_alt_sep = '|'
+let g:airline_left_sep = ' '
+let g:airline_right_alt_sep = '|'
+
+let g:airline#extensions#tabline#right_sep = ' '
+let g:airline#extensions#tabline#right_alt_sep = '|'
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
 
 " ##############################
 " ############ TIPS ############
