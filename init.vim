@@ -5,6 +5,7 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'chrboesch/vim-tabline'
+Plug 'airblade/vim-gitgutter'
 
 call plug#end()
 
