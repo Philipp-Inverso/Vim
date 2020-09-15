@@ -1,20 +1,29 @@
-" TODO: Plugins
+" TODO: Plugins argument/movement (daa) {{{
 call plug#begin(stdpath('data') . '/plugged')
 
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
+" visuals
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'chrboesch/vim-tabline'
+" git
 Plug 'airblade/vim-gitgutter'
+" html
+Plug 'alvan/vim-closetag'
+" programming
 
 call plug#end()
+" }}}
 
 " ##############################
 " ###### GENERAL SETTINGS ######
-" ##############################
+" ############################## {{{
+let learning=1
+" General Settings {{{
+let mapleader=" "
 set nocompatible
 syntax on
-set encoding=utf-8
+set encoding=utf-8 fileformat=unix
 set tabstop=2 shiftwidth=2 softtabstop=2 shiftround expandtab
 
 " show extra whitespace (leading <tab>, trailing whitespace)
@@ -22,17 +31,17 @@ set list listchars=tab:»·,trail:·,nbsp:·
 
 " line numbering
 set number relativenumber
-autocmd InsertEnter * :se norelativenumber
-autocmd InsertLeave * :se relativenumber
+augroup numberChange
+  autocmd!
+  autocmd InsertEnter * :se norelativenumber
+  autocmd InsertLeave * :se relativenumber
+augroup END
 
 " theme
 colorscheme desert
 
 " copy to and from System-Clipboard
 set clipboard+=unnamed
-
-" reload vimrc on save
-autocmd! bufwritepost ~/AppData/Local/nvim/init.vim source %
 
 " Make it obvious where 80 characters is TODO better
 set textwidth=80
@@ -44,23 +53,47 @@ set diffopt+=vertical
 " Open new split panes to right and bottom, which feels more natural
 set splitbelow
 set splitright
+" }}}
 
+" Vimscript settings {{{
+" reload vimrc on save
+augroup vimscript
+  autocmd!
+  autocmd! bufwritepost $MYVIMRC source %
+  autocmd FileType vim setlocal foldmethod=marker
+augroup END
+" quick edit/ source vimrc
+nnoremap <leader>ev :tabedit $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+" }}}
+
+" Mappings {{{
 " disable arrow-keys
 nnoremap <left> <Nop>
 nnoremap <right> <Nop>
 nnoremap <up> <Nop>
 nnoremap <down> <Nop>
 
-" TODO: enableable
-" inoremap <left> <Nop>
-" inoremap <right> <Nop>
-" inoremap <up> <Nop>
-" inoremap <down> <Nop>
+if learning
+  inoremap <left> <Nop>
+  inoremap <right> <Nop>
+  inoremap <up> <Nop>
+  inoremap <down> <Nop>
+endif
 
-" find cursor with \c
-:highlight CursorLine cterm=None ctermfg=darkred ctermbg=blue guifg=darkred guibg=blue
-:highlight CursorColumn cterm=None ctermfg=darkred ctermbg=gray guifg=darkred guibg=gray
-:nnoremap <Leader>c :set CursorLine! CursorcoLumn!<CR>
+inoremap <C-u> <esc>vBU<esc>A
+inoremap jk <esc>
+inoremap <esc> <esc>ccNO!<esc>
+
+nnoremap <leader>" viw<esc>a"<esc>bi"<esc>lela
+nnoremap <leader>' viw<esc>a'<esc>bi'<esc>lela
+
+vnoremap <leader>" <esc>`<i"<esc>`>a"<esc>
+vnoremap <leader>' <esc>`<i'<esc>`>a'<esc>
+vnoremap <leader>[ <esc>`<i[<esc>`>a]<esc>
+vnoremap <leader>{ <esc>`<i{<esc>`>a}<esc>
+vnoremap <leader>( <esc>`<i(<esc>`>a)<esc>
+vnoremap <leader>< <esc>`<i<<esc>`>a><esc>
 
 " Quicker window movement
 nnoremap <C-j> <C-w>j
@@ -68,6 +101,32 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 
+" find cursor with \c
+:highlight CursorLine cterm=None ctermfg=darkred ctermbg=blue guifg=darkred guibg=blue
+:highlight CursorColumn cterm=None ctermfg=darkred ctermbg=gray guifg=darkred guibg=gray
+:nnoremap <Leader>c :set CursorLine! CursorcoLumn!<CR>
+
+" Abbreviations
+iabbrev flase false
+iabbrev fasle false
+augroup pythonMappings
+  autocmd!
+  autocmd FileType python :iabbrev <buffer> false False
+  autocmd FileType python :iabbrev <buffer> true True
+  autocmd FileType python :iabbrev <buffer> flase False
+  autocmd FileType python :iabbrev <buffer> fasle False
+augroup END
+
+augroup markdownMappings
+  autocmd!
+  autocmd FileType markdown :onoremap <buffer> ih :<C-u>execute "normal! ?^==\\+$\r:nohlsearch\rkvg_"<cr>
+  autocmd FileType markdown :onoremap <buffer> ah :<C-u>execute "normal! ?^==\\+$\r:nohlsearch\rg_vk0"<cr>
+  autocmd FileType markdown :onoremap <buffer> ilh :<C-u>execute "normal! ?^--\\+$\r:nohlsearch\rkvg_"<cr>
+  autocmd FileType markdown :onoremap <buffer> alh :<C-u>execute "normal! ?^--\\+$\r:nohlsearch\rg_vk0"<cr>
+augroup END
+" }}}
+
+" foo {{{
 " automatically enable/ disable highlightsearch
 augroup vimrc-incsearch-highlight
   autocmd!
@@ -75,9 +134,9 @@ augroup vimrc-incsearch-highlight
   autocmd CmdlineLeave /,\? :set nohlsearch
 augroup END
 
-" TODO ???
-" set undodir=~/Neovim/undodir
-" set undofile
+" save history -> can undo after restarting vim
+set undodir=~/Neovim/undodir
+set undofile
 
 " Tab completion  TODO: understand!!
 " will insert tab at beginning of line,
@@ -93,10 +152,12 @@ function! InsertTabWrapper()
 endfunction
 inoremap <Tab> <C-r>=InsertTabWrapper()<CR>
 inoremap <S-Tab> <C-n>
+" }}}
+" }}}
 
 " ################
 " ### Spelling ###
-" ################
+" ################ {{{
 
 " '[s' / ']s'	: jump between misspelled words
 " 'zg' / 'zw'	: mark word as good/ wrong
@@ -104,30 +165,37 @@ inoremap <S-Tab> <C-n>
 " 'z='	: show suggestions
 set spell
 set spelllang=de,en
-set complete+=kspell
-autocmd FileType python set omnifunc+=pythoncomplete#Complete,python3complete#Complete
+augroup spelling
+  autocmd!
+  autocmd FileType tex setlocal complete+=kspell
+  autocmd FileType python setlocal omnifunc+=pythoncomplete#Complete
+  ",python3complete#Complete
+augroup END
+" }}}
 
 " #####################
 " ### FINDING FILES ###
-" #####################
+" ##################### {{{
 
 " search all subfolders (recursively)
 set path+=**
 " Display all matching files when tab-complete
 set wildmenu
+" }}}
 
 " ###################
 " ### TAG JUMPING ###
-" ###################
+" ################### {{{
 
 " create 'tags' file
 " ^]	: jump to definition
 " ^t	: go back in jump stack
 command! MakeTags !ctags -R .
+" }}}
 
 " ####################
 " ### AUTOCOMPLETE ###
-" ####################
+" #################### {{{
 
 " tabcompletion enabled
 " doc: |ins-completion|
@@ -135,45 +203,52 @@ command! MakeTags !ctags -R .
 " ^x^f		: search for filenames
 " ^x^]		: search tags only
 " ^n / ^p	: complete (next/prev)
+" }}}
 
 " #####################
 " ### FILE BROWSING ###
-" #####################
+" ##################### {{{
 
 " open tabs with 'tabnew'
 " switch tabs with 'gt' / 'gT'
 
-" ':edit FOLDER'	: open file browser
-" '<CR>' / 'v' / 't'	: open / open in v-split / open in new tab
-" ':help netrw-browse-maps'	: for info
+" ':edit FOLDER': open file browser
+" '<CR>' / 'v' / 't': open / open in v-split / open in new tab
+" ':help netrw-browse-maps': for info
 let g:netrw_banner=0
 let g:netrw_browse_split=4
 let g:netrw_altv=1
 let g:netrw_liststyle=3
 let g:netrw_list_hide=netrw_gitignore#Hide()
 let g:netrw_list_hide.='.\(^\|\s\s\)\zs\.\S\*'
+" }}}
 
-" #############
-" SNIPPETS
-" #############
+" ################
+" ### SNIPPETS ###
+" ################ {{{
 " nnoremap command(e.g. ,html) :-1read %HOME/Neovim/snippets/FILE<CR>_further_executed_keystrokes
 
-let snippet_path="~/AppData/Local/nvim/snippets"
-nnoremap \python :-1read ~/AppData/Local/nvim/snippets/skeleton.py<CR>o
-" nnoremap \java :-1read $HOME/Neovim/snippets/skeleton.java<CR>
+nnoremap <leader>python :-1read ~/AppData/Local/nvim/snippets/skeleton.py<CR>o
+nnoremap <leader>java :-1read ~/AppData/Local/nvim/snippets/skeleton.java<CR>
+nnoremap <leader>html :-1read ~/AppData/Local/nvim/snippets/skeleton.html<CR>
+" }}}
 
-" #############
-" BUILD INTEGRATION
-" #############
-"
+" #########################
+" ### BUILD INTEGRATION ###
+" ######################### {{{
+
 " http://philipbradley.net/posts/rspec-into-vim-with-quickfix
 " set makeprg=bundle\ exec\ rspec\ -f\ QuickfixFormatter
-autocmd FileType python map <buffer> <F9> :w<CR>:exec '!python' shellescape(@%, 1)<CR>
-autocmd FileType python imap <buffer> <F9> <esc>:w<CR>:exec '!python' shellescape(@%, 1)<CR>
+augroup buildIntegration
+  autocmd!
+  autocmd FileType python map <buffer> <F9> :w<CR>:exec '!python' shellescape(@%, 1)<CR>
+  autocmd FileType python imap <buffer> <F9> <esc>:w<CR>:exec '!python' shellescape(@%, 1)<CR>
+augroup END
+" }}}
 
-" ####################################################################################################
-" PLUGIN SETTINGS
-" ###################################################################################################
+" #######################
+" ### PLUGIN SETTINGS ###
+" ####################### {{{
 
 " #############
 " Markdown Preview
@@ -181,9 +256,7 @@ autocmd FileType python imap <buffer> <F9> <esc>:w<CR>:exec '!python' shellescap
 " automatically open Preview when entering Markdown Buffer
 let g:mkdp_auto_start = 1
 
-" #############
-" Airline
-" #############
+" Airline {{{
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_right_sep = ' '
 let g:airline_left_alt_sep = '|'
@@ -194,9 +267,12 @@ let g:airline#extensions#tabline#right_sep = ' '
 let g:airline#extensions#tabline#right_alt_sep = '|'
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
+" }}}
+" }}}
 
 " ##############################
 " ############ TIPS ############
 " ##############################
 "
 " :@"<CR>     Execute yanked command
+" onoremap p i( -> movement mappings
