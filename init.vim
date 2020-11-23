@@ -38,13 +38,13 @@ augroup numberChange
 augroup END
 
 " theme
-colorscheme desert
+colorscheme slate
 
 " copy to and from System-Clipboard
 set clipboard+=unnamed
 
 " Make it obvious where 80 characters is TODO better
-set textwidth=80
+" set textwidth=80
 " set colorcolumn=+1
 
 " Always use vertical diffs
@@ -85,15 +85,34 @@ inoremap <C-u> <esc>vBU<esc>A
 inoremap jk <esc>
 inoremap <esc> <esc>ccNO!<esc>
 
+nnoremap <leader>o o<esc>
+nnoremap <leader>O O<esc>
+
+nnoremap <leader>c viw<esc>b~w
+inoremap <C-c> <esc>b~ea
+
+" surround text with ...
 nnoremap <leader>" viw<esc>a"<esc>bi"<esc>lela
 nnoremap <leader>' viw<esc>a'<esc>bi'<esc>lela
 
 vnoremap <leader>" <esc>`<i"<esc>`>a"<esc>
 vnoremap <leader>' <esc>`<i'<esc>`>a'<esc>
 vnoremap <leader>[ <esc>`<i[<esc>`>a]<esc>
+vnoremap <leader>] <esc>`<i[<esc>`>a]<esc>
 vnoremap <leader>{ <esc>`<i{<esc>`>a}<esc>
+vnoremap <leader>} <esc>`<i{<esc>`>a}<esc>
 vnoremap <leader>( <esc>`<i(<esc>`>a)<esc>
+vnoremap <leader>) <esc>`<i(<esc>`>a)<esc>
 vnoremap <leader>< <esc>`<i<<esc>`>a><esc>
+vnoremap <leader>> <esc>`<i<<esc>`>a><esc>
+
+" exchange ae ue oe to corresponding
+inoremap ae ä
+inoremap Ae Ä
+inoremap ue ü
+inoremap Ue Ä
+inoremap oe ö
+inoremap Oe Ö
 
 " Quicker window movement
 nnoremap <C-j> <C-w>j
@@ -101,10 +120,10 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 
-" find cursor with \c
+" find cursor with <leader>c
 :highlight CursorLine cterm=None ctermfg=darkred ctermbg=blue guifg=darkred guibg=blue
 :highlight CursorColumn cterm=None ctermfg=darkred ctermbg=gray guifg=darkred guibg=gray
-:nnoremap <Leader>c :set CursorLine! CursorcoLumn!<CR>
+:nnoremap <Leader>fc :set CursorLine! CursorcoLumn!<CR>
 
 " Abbreviations
 iabbrev flase false
