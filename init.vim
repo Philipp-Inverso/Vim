@@ -1,4 +1,4 @@
-" TODO: Plugins argument/movement (daa) {{{
+" Plugins {{{
 call plug#begin(stdpath('data') . '/plugged')
 
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
@@ -6,11 +6,19 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'chrboesch/vim-tabline'
+" development
+Plug 'preservim/nerdtree' |
+            \ Plug 'Xuyuanp/nerdtree-git-plugin' |
+            \ Plug 'ryanoasis/vim-devicons'
+Plug 'vim-scripts/argtextobj.vim'
+Plug 'majutsushi/tagbar'
+Plug 'tpope/vim-fugitive'
 " git
 Plug 'airblade/vim-gitgutter'
 " html
 Plug 'alvan/vim-closetag'
-" programming
+" tex
+Plug 'lervag/vimtex'
 
 call plug#end()
 " }}}
@@ -38,7 +46,7 @@ augroup numberChange
 augroup END
 
 " theme
-colorscheme slate
+colorscheme desert
 
 " copy to and from System-Clipboard
 set clipboard+=unnamed
@@ -81,12 +89,12 @@ if learning
   inoremap <down> <Nop>
 endif
 
-inoremap <C-u> <esc>vBU<esc>A
+inoremap <C-u> <esc>viw~<esc>ea
 inoremap jk <esc>
 inoremap <esc> <esc>ccNO!<esc>
 
-nnoremap <leader>o o<esc>
-nnoremap <leader>O O<esc>
+nnoremap <leader>o o<esc>k
+nnoremap <leader>O O<esc>j
 
 nnoremap <leader>c viw<esc>b~w
 inoremap <C-c> <esc>b~ea
@@ -107,12 +115,13 @@ vnoremap <leader>< <esc>`<i<<esc>`>a><esc>
 vnoremap <leader>> <esc>`<i<<esc>`>a><esc>
 
 " exchange ae ue oe to corresponding
-inoremap ae ä
-inoremap Ae Ä
-inoremap ue ü
-inoremap Ue Ä
-inoremap oe ö
-inoremap Oe Ö
+inoremap aae ä
+inoremap AAE Ä
+inoremap uue ü
+inoremap UUE Ü
+inoremap ooe ö
+inoremap OOE Ö
+inoremap sze ß
 
 " Quicker window movement
 nnoremap <C-j> <C-w>j
@@ -178,14 +187,15 @@ inoremap <S-Tab> <C-n>
 " ### Spelling ###
 " ################ {{{
 
-" '[s' / ']s'	: jump between misspelled words
-" 'zg' / 'zw'	: mark word as good/ wrong
-" 'zG' / 'zW'	: mark word as good/ wrong temporarily
-" 'z='	: show suggestions
-set spell
+" '[s' / ']s' : jump between misspelled words
+" 'zg' / 'zw' : mark word as good/ wrong
+" 'zG' / 'zW' : mark word as good/ wrong temporarily
+" 'z='  : show suggestions
+set nospell " diable spell by default, enable if needed(tex files)
 set spelllang=de,en
 augroup spelling
   autocmd!
+  autocmd FileType tex setlocal spell
   autocmd FileType tex setlocal complete+=kspell
   autocmd FileType python setlocal omnifunc+=pythoncomplete#Complete
   ",python3complete#Complete
@@ -207,8 +217,8 @@ set wildmenu
 " ################### {{{
 
 " create 'tags' file
-" ^]	: jump to definition
-" ^t	: go back in jump stack
+" ^]  : jump to definition
+" ^t  : go back in jump stack
 command! MakeTags !ctags -R .
 " }}}
 
@@ -218,10 +228,10 @@ command! MakeTags !ctags -R .
 
 " tabcompletion enabled
 " doc: |ins-completion|
-" ^x^n		: search JUST this file
-" ^x^f		: search for filenames
-" ^x^]		: search tags only
-" ^n / ^p	: complete (next/prev)
+" ^x^n    : search JUST this file
+" ^x^f    : search for filenames
+" ^x^]    : search tags only
+" ^n / ^p : complete (next/prev)
 " }}}
 
 " #####################
@@ -269,11 +279,10 @@ augroup END
 " ### PLUGIN SETTINGS ###
 " ####################### {{{
 
-" #############
-" Markdown Preview
-" #############
+" Markdown Preview {{{
 " automatically open Preview when entering Markdown Buffer
 let g:mkdp_auto_start = 1
+" }}}
 
 " Airline {{{
 let g:airline#extensions#tabline#enabled = 1
@@ -286,6 +295,10 @@ let g:airline#extensions#tabline#right_sep = ' '
 let g:airline#extensions#tabline#right_alt_sep = '|'
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
+" }}}
+
+" NERDTree {{{
+autocmd vimenter * NERDTree
 " }}}
 " }}}
 
