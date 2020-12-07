@@ -1,3 +1,4 @@
+set guifont="FiraMono NF"
 " Plugins {{{
 call plug#begin(stdpath('data') . '/plugged')
 
@@ -6,6 +7,7 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'chrboesch/vim-tabline'
+" Plug 'ryanoasis/nerd-fonts' " may be broke (manual install)
 " development
 Plug 'preservim/nerdtree' |
             \ Plug 'Xuyuanp/nerdtree-git-plugin' |
@@ -299,6 +301,7 @@ let g:airline#extensions#tabline#left_alt_sep = '|'
 
 " NERDTree {{{
 autocmd vimenter * NERDTree
+autocmd TabNewEntered * NERDTree
 " }}}
 " }}}
 
