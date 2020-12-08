@@ -63,6 +63,10 @@ set diffopt+=vertical
 " Open new split panes to right and bottom, which feels more natural
 set splitbelow
 set splitright
+
+" good width for nerdtree + :Gstatus (fugitive)
+set winwidth=50
+set winminwidth=50
 " }}}
 
 " Vimscript settings {{{
